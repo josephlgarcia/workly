@@ -1,4 +1,4 @@
-import { loadDynamicStyle } from "../utils/styleManager";   // import function that controls dynamic CSS
+import { loadDynamicStyle } from "../utils/styleManager.js";   // import function that controls dynamic CSS
 
 export function renderNotFound(prevRoute) {
     document.getElementById('app').innerHTML = `
