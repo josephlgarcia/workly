@@ -3,7 +3,7 @@ export async function initLoginEvents() {   // function that controls login even
     document.getElementById('form-login').addEventListener('submit', async (e) => { // we handle the form submission event
         e.preventDefault();
         try {
-            location.hash = '#/employee/dashboard';
+            location.hash = '#/admin';
         } catch (error) {
             alert(error.message);
         }

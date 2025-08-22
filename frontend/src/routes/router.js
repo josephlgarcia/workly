@@ -16,16 +16,16 @@ import { showEmployeePayments } from '../views/employee/employeePayments.js';
 /* We define the application routes and associate them with the corresponding view functions */
 const routes = {
     '#/login': showLogin,
-    '#/employee/dashboard': showEmployeeDashboard,
-    '#/admin/dashboard': showAdminDashboard,
-    '#/admin/dashboard/employeeList': showEmployeeList,
-    '#/admin/dashboard/requestApproval': showRequestApproval,
-    '#/admin/dashboard/requestsHistory': showRequestHistory,
-    '#/employee/dashboard/Contract': showEmployeeContract,
-    '#/employee/dashboard/Details': showEmployeeDetails,
-    '#/employee/dashboard/LeaveHistory': showEmployeeLeaveHistory,
-    '#/employee/dashboard/LeaveRequest': showEmployeeLeaveRequest,
-    '#/employee/dashboard/Payments': showEmployeePayments
+    '#/employee': showEmployeeDashboard,
+    '#/admin': showAdminDashboard,
+    '#/admin/employeeList': showEmployeeList,
+    '#/admin/requestApproval': showRequestApproval,
+    '#/admin/requestsHistory': showRequestHistory,
+    '#/employee/Contract': showEmployeeContract,
+    '#/employee/Details': showEmployeeDetails,
+    '#/employee/LeaveHistory': showEmployeeLeaveHistory,
+    '#/employee/LeaveRequest': showEmployeeLeaveRequest,
+    '#/employee/Payments': showEmployeePayments
 }
 
 
