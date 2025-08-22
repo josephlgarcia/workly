@@ -82,11 +82,45 @@ CREATE TABLE social_security_types (
 	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
+CREATE TABLE employees (
+	id_employee INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+	role_id INT,
+	position_id INT,
+	departament_id INT,
+    city_id INT,
+	document_type ENUM('Cedula de Ciudadania','Tarjeta de extranjeria', 'Cedula de extranjeria', 'Numero de identificacion tributaria', 'Pasaporte', 'Permiso especial de permanencia'),
+	first_name VARCHAR(100),
+	last_name VARCHAR(100),
+	document_number VARCHAR(20),
+	address VARCHAR(255),
+	email VARCHAR(100) UNIQUE,
+   gender ENUM('Masculino','Femenino','Otro'),
+	vacation_days_available INT, 
+	password VARCHAR(255),
+	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	
+	FOREIGN KEY (role_id) REFERENCES roles (id_role) ON DELETE SET NULL ON UPDATE CASCADE,
+	FOREIGN KEY (position_id) REFERENCES positions (id_position) ON DELETE SET NULL ON UPDATE CASCADE,
+	FOREIGN KEY (departament_id) REFERENCES departaments (id_departament) ON DELETE SET NULL ON UPDATE CASCADE,
+    FOREIGN KEY (city_id) REFERENCES cities (id_city) ON DELETE SET NULL ON UPDATE CASCADE
+);
+
+CREATE TABLE employee_phones (
+	id_employee_phone INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+	employee_id INT,
+	phone_number VARCHAR(20),
+	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	
+	FOREIGN KEY (employee_id) REFERENCES employees (id_employee) ON DELETE SET NULL ON UPDATE CASCADE
+);
+
 CREATE TABLE social_securities (
 	id_social_security INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
 	social_security_type_id INT,
 	name VARCHAR(255),
-	percentage FLOAT NOT NULL, -- ¿necesario?
+	percentage FLOAT NOT NULL,
 	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
@@ -95,11 +129,14 @@ CREATE TABLE social_securities (
 
 CREATE TABLE paysheets (
 	id_paysheet INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
-	bonus DECIMAL(10,2), -- Solo bonus
+	employee_id INT,
+	bonus DECIMAL(10,2),
 	subtotal_payment DECIMAL(18,4), 
 	total_payment DECIMAL(18,4),
 	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	
+	FOREIGN KEY (employee_id) REFERENCES employees (id_employee) ON DELETE SET NULL ON UPDATE CASCADE
 );
 
 CREATE TABLE paysheet_overtime (
@@ -124,40 +161,6 @@ CREATE TABLE paysheet_social_securities (
 	
 	FOREIGN KEY (paysheet_id) REFERENCES paysheets(id_paysheet) ON DELETE RESTRICT ON UPDATE CASCADE,
 	FOREIGN KEY (social_security_id) REFERENCES social_securities(id_social_security) ON DELETE RESTRICT ON UPDATE CASCADE
-);
-
-CREATE TABLE employees (
-	id_employee INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
-	role_id INT,
-	position_id INT,
-	departament_id INT,
-    city_id INT,
-	document_type ENUM('Cedula de Ciudadania','Tarjeta de extranjeria', 'Cedula de extranjeria', 'Numero de identificacion tributaria', 'Pasaporte', 'Permiso especial de permanencia'),
-	first_name VARCHAR(100),
-	last_name VARCHAR(100),
-	document_number VARCHAR(20),
-	address VARCHAR(255),
-	email VARCHAR(100) UNIQUE,
-    	gender ENUM('Masculino','Femenino','Otro'),
-	vacation_days_available INT, 
-	password VARCHAR(255),
-	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-	
-	FOREIGN KEY (role_id) REFERENCES roles (id_role) ON DELETE SET NULL ON UPDATE CASCADE,
-	FOREIGN KEY (position_id) REFERENCES positions (id_position) ON DELETE SET NULL ON UPDATE CASCADE,
-	FOREIGN KEY (departament_id) REFERENCES departaments (id_departament) ON DELETE SET NULL ON UPDATE CASCADE,
-    FOREIGN KEY (city_id) REFERENCES cities (id_city) ON DELETE SET NULL ON UPDATE CASCADE
-);
-
-CREATE TABLE employee_phones (
-	id_employee_phone INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
-	employee_id INT,
-	phone_number VARCHAR(20),
-	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-	
-	FOREIGN KEY (employee_id) REFERENCES employees (id_employee) ON DELETE SET NULL ON UPDATE CASCADE
 );
 
 CREATE TABLE contracts (
@@ -191,6 +194,7 @@ CREATE TABLE salary_history (
 
 CREATE TABLE leaves (
 	id_leave INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+	employee_id INT,
 	leave_status_id INT,
 	leave_type_id INT,
 	creation_date DATETIME,
@@ -198,6 +202,7 @@ CREATE TABLE leaves (
 	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	
+	FOREIGN KEY (employee_id) REFERENCES employees (id_employee) ON DELETE SET NULL ON UPDATE CASCADE,
 	FOREIGN KEY (leave_status_id) REFERENCES leaves_status (id_leave_status), 
 	FOREIGN KEY (leave_type_id) REFERENCES leaves_types (id_leave_type)
 );

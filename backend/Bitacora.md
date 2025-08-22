@@ -36,3 +36,21 @@ Este controlador contiene las funciones del crud llamando las queries que tenemo
 - **Delete** = City.delete(id);
 *- EndPoints:*
 Los endpoints se manejan con la siguiente ruta ```/api/v1/```, las cities se ven en la siguiente ruta ```http://localhost:3001/api/v1/city```
+
+
+---
+## #2 Creation of all strong entity models, controllers, and endpoints (21 de agosto 2025)
+### Implementaciones
+Se creó el respectivo modelo, controlador y routes de cada entidad fuerte en nuestra base de datos, dejando como resultado un crud completo en los siguientes EndPoints.
+
+El servidor de express lo lanzamos con el comando ```npm start```.
+- ```http://localhost:3001/api/v1/city```
+- ```http://localhost:3001/api/v1/role```
+- ```http://localhost:3001/api/v1/position```
+- ```http://localhost:3001/api/v1/departament```
+- ```http://localhost:3001/api/v1/contract-type```
+- ```http://localhost:3001/api/v1/approval-status```
+- ```http://localhost:3001/api/v1/leaves-status```
+- ```http://localhost:3001/api/v1/social-security-type```
+- ```http://localhost:3001/api/v1/leaves-type```
+- ```http://localhost:3001/api/v1/overtime-type```
