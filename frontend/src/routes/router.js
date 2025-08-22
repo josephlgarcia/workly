@@ -18,14 +18,14 @@ const routes = {
     '#/login': showLogin,
     '#/employee/dashboard': showEmployeeDashboard,
     '#/admin/dashboard': showAdminDashboard,
-    '#/employee/list': showEmployeeList,
-    '#/request/approval': showRequestApproval,
-    '#/request/history': showRequestHistory,
-    '#/employee/contract': showEmployeeContract,
-    '#/employee/details': showEmployeeDetails,
-    '#/employee/leave/history': showEmployeeLeaveHistory,
-    '#/employee/leave/request': showEmployeeLeaveRequest,
-    '#/employee/payments': showEmployeePayments
+    '#/admin/dashboard/employeeList': showEmployeeList,
+    '#/admin/dashboard/requestApproval': showRequestApproval,
+    '#/admin/dashboard/requestsHistory': showRequestHistory,
+    '#/employee/dashboard/Contract': showEmployeeContract,
+    '#/employee/dashboard/Details': showEmployeeDetails,
+    '#/employee/dashboard/LeaveHistory': showEmployeeLeaveHistory,
+    '#/employee/dashboard/LeaveRequest': showEmployeeLeaveRequest,
+    '#/employee/dashboard/Payments': showEmployeePayments
 }
 
 

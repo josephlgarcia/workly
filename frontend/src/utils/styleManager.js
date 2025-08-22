@@ -1,12 +1,21 @@
 
-// Remove all dynamic styles
-export function clearDynamicStyles() {
-    document.querySelectorAll('link[data-style]').forEach(link => link.remove());
+export function clearDynamicStyles(exclude = []) {
+    document.querySelectorAll('link[data-style]').forEach(link => {
+        const name = link.dataset.style;
+        if (!exclude.includes(name)) {
+            link.remove();
+        }
+    });
 }
 
-// Inject new dynamic CSS
-export function loadDynamicStyle(href, name) {
-    clearDynamicStyles(); // First we clean
+
+export function loadDynamicStyle(href, name, exclude = []) {
+    clearDynamicStyles(exclude); // No borra los que estén en `exclude`
+
+    // Verifica si ya existe
+    const existing = document.querySelector(`link[data-style="${name}"]`);
+    if (existing) return;
+
     const link = document.createElement('link');
     link.rel = 'stylesheet';
     link.href = href;
