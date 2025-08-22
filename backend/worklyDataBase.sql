@@ -1,0 +1,234 @@
+DROP DATABASE IF EXISTS workly;
+CREATE DATABASE workly;
+USE workly;
+
+CREATE TABLE cities (
+	id_city INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    name VARCHAR(255),
+	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE roles (
+	id_role INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+	name VARCHAR(100) NOT NULL UNIQUE,
+	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE positions (
+	id_position INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+	name VARCHAR(255) NOT NULL UNIQUE, 
+	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE departaments (
+	id_departament INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+	name VARCHAR(255) NOT NULL UNIQUE, 
+	description TEXT,
+	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE contract_types (
+	id_contract_type INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+	name VARCHAR(100) NOT NULL UNIQUE,
+	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE approval_status (
+	id_approval_status INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+	name VARCHAR(255) NOT NULL UNIQUE,  
+	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE contract_status (
+	id_contract_status INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+	name VARCHAR(100) NOT NULL UNIQUE, 
+	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE leaves_status (
+	id_leave_status INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+	name VARCHAR(100) NOT NULL UNIQUE,
+	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE leaves_types (
+	id_leave_type INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+	name VARCHAR(255) NOT NULL UNIQUE,
+	leaves_file boolean,
+	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE overtime_types ( 
+    id_overtime_type INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    name VARCHAR(50) NOT NULL UNIQUE,
+    percentage FLOAT NOT NULL,
+	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE social_security_types (
+	id_social_security_type INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+	name VARCHAR(255),
+	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE employees (
+	id_employee INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+	role_id INT,
+	position_id INT,
+	departament_id INT,
+    city_id INT,
+	document_type ENUM('Cedula de Ciudadania','Tarjeta de extranjeria', 'Cedula de extranjeria', 'Numero de identificacion tributaria', 'Pasaporte', 'Permiso especial de permanencia'),
+	first_name VARCHAR(100),
+	last_name VARCHAR(100),
+	document_number VARCHAR(20),
+	address VARCHAR(255),
+	email VARCHAR(100) UNIQUE,
+   gender ENUM('Masculino','Femenino','Otro'),
+	vacation_days_available INT, 
+	password VARCHAR(255),
+	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	
+	FOREIGN KEY (role_id) REFERENCES roles (id_role) ON DELETE SET NULL ON UPDATE CASCADE,
+	FOREIGN KEY (position_id) REFERENCES positions (id_position) ON DELETE SET NULL ON UPDATE CASCADE,
+	FOREIGN KEY (departament_id) REFERENCES departaments (id_departament) ON DELETE SET NULL ON UPDATE CASCADE,
+    FOREIGN KEY (city_id) REFERENCES cities (id_city) ON DELETE SET NULL ON UPDATE CASCADE
+);
+
+CREATE TABLE employee_phones (
+	id_employee_phone INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+	employee_id INT,
+	phone_number VARCHAR(20),
+	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	
+	FOREIGN KEY (employee_id) REFERENCES employees (id_employee) ON DELETE SET NULL ON UPDATE CASCADE
+);
+
+CREATE TABLE social_securities (
+	id_social_security INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+	social_security_type_id INT,
+	name VARCHAR(255),
+	percentage FLOAT NOT NULL,
+	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+	FOREIGN KEY (social_security_type_id) REFERENCES social_security_types (id_social_security_type) 
+);
+
+CREATE TABLE paysheets (
+	id_paysheet INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+	employee_id INT,
+	bonus DECIMAL(10,2),
+	subtotal_payment DECIMAL(18,4), 
+	total_payment DECIMAL(18,4),
+	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	
+	FOREIGN KEY (employee_id) REFERENCES employees (id_employee) ON DELETE SET NULL ON UPDATE CASCADE
+);
+
+CREATE TABLE paysheet_overtime (
+	id_paysheet_overtime INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+	paysheet_id INT NOT NULL,
+	overtime_type_id INT NOT NULL,
+	hours INT NOT NULL,
+	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	
+	FOREIGN KEY (paysheet_id) REFERENCES paysheets(id_paysheet) ON DELETE RESTRICT ON UPDATE CASCADE,
+	FOREIGN KEY (overtime_type_id) REFERENCES overtime_types(id_overtime_type) ON DELETE RESTRICT ON UPDATE CASCADE
+);
+
+CREATE TABLE paysheet_social_securities (
+	id_paysheet_social_security INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+	paysheet_id INT NOT NULL,
+	social_security_id INT NOT NULL,
+	total_discount DECIMAL(10,2), 
+	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	
+	FOREIGN KEY (paysheet_id) REFERENCES paysheets(id_paysheet) ON DELETE RESTRICT ON UPDATE CASCADE,
+	FOREIGN KEY (social_security_id) REFERENCES social_securities(id_social_security) ON DELETE RESTRICT ON UPDATE CASCADE
+);
+
+CREATE TABLE contracts (
+	id_contract INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+	employee_id INT,
+	contract_type_id INT,
+	contract_status_id INT,
+	start_date DATE,
+	end_date DATE,
+	salary DECIMAL(18,4),
+	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	
+	FOREIGN KEY (employee_id) REFERENCES employees (id_employee) ON DELETE SET NULL ON UPDATE CASCADE,
+	FOREIGN KEY (contract_type_id) REFERENCES contract_types (id_contract_type) ON DELETE SET NULL ON UPDATE CASCADE,
+	FOREIGN KEY (contract_status_id) REFERENCES contract_status (id_contract_status) ON DELETE SET NULL ON UPDATE CASCADE
+);
+
+CREATE TABLE salary_history ( 
+	id_salary_history INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+	contract_id INT,
+	old_salary DECIMAL(18,4),
+	new_salary  DECIMAL(18,4),
+	date DATE,
+	reason TEXT,
+	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	
+	FOREIGN KEY (contract_id) REFERENCES contracts (id_contract) ON DELETE SET NULL ON UPDATE CASCADE
+);
+
+CREATE TABLE leaves (
+	id_leave INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+	employee_id INT,
+	leave_status_id INT,
+	leave_type_id INT,
+	creation_date DATETIME,
+	description TEXT,
+	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	
+	FOREIGN KEY (employee_id) REFERENCES employees (id_employee) ON DELETE SET NULL ON UPDATE CASCADE,
+	FOREIGN KEY (leave_status_id) REFERENCES leaves_status (id_leave_status), 
+	FOREIGN KEY (leave_type_id) REFERENCES leaves_types (id_leave_type)
+);
+
+CREATE TABLE attachments (
+	id_attachment INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+	leave_id INT,
+	file_name VARCHAR(255),
+	file_route VARCHAR(255),
+	comments TEXT,
+	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	
+	FOREIGN KEY (leave_id) REFERENCES leaves (id_leave) 
+);
+
+CREATE TABLE approvals (
+	id_approval INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+	approver_id INT,
+	leave_id INT,
+	approval_status_id INT,
+	approval_date DATE,
+	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	
+	FOREIGN KEY (approver_id) REFERENCES employees (id_employee), 
+	FOREIGN KEY (leave_id) REFERENCES leaves (id_leave),
+	FOREIGN KEY (approval_status_id) REFERENCES approval_status (id_approval_status)
+);
