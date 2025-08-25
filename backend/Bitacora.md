@@ -54,3 +54,33 @@ El servidor de express lo lanzamos con el comando ```npm start```.
 - ```http://localhost:3001/api/v1/social-security-type```
 - ```http://localhost:3001/api/v1/leaves-type```
 - ```http://localhost:3001/api/v1/overtime-type```
+
+---
+## #3 Creating a model, controller, and employee endpoint
+
+Se instaló la biblioteca Bcryptjs para encriptar las contraseñas.
+
+Formato para el post de empleados y numeros de telefono 
+(en el backend ya se maneja la logica para hacer post, delete y update de los numero de telefono relacionados a el empleado)
+```
+  {
+    "employeeData": {
+    "role_id": ,
+    "position_id": ,
+    "departament_id": ,
+    "city_id": ,
+    "document_type": "Cedula de Ciudadania",
+    "first_name": "",
+    "last_name": "",
+    "document_number": "",
+    "address": "",
+    "email": "",
+    "gender": "Masculino o Femenino",
+    "password": ""
+  },
+    "phoneNumbers": [
+    "",
+    ""
+  ]
+  }
+```

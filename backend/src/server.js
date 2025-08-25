@@ -12,6 +12,7 @@ const leavesStatusRoutes = require('./routes/leaves_status.routes');
 const socialSecurityTypeRoutes = require('./routes/social_security_type.routes');
 const leavesTypeRoutes = require('./routes/leaves_type.routes');
 const overtimeTypeRoutes = require('./routes/overtime_type.routes');
+const employeeRoutes = require('./routes/employee.routes');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -36,6 +37,7 @@ app.use('/api/v1/leaves-status', leavesStatusRoutes);
 app.use('/api/v1/social-security-type', socialSecurityTypeRoutes);
 app.use('/api/v1/leaves-type', leavesTypeRoutes);
 app.use('/api/v1/overtime-type', overtimeTypeRoutes);
+app.use('/api/v1/employee', employeeRoutes);
 
 
 // Start server

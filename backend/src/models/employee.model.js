@@ -1,0 +1,141 @@
+const pool = require('./db');
+
+const Employee = {
+    getAll: async () => {
+        const query = `
+        SELECT 
+            e.*, 
+            ep.phone_number
+        FROM employees AS e
+        LEFT JOIN employee_phones AS ep ON e.id_employee = ep.employee_id
+    `;
+        const [rows] = await pool.query(query);
+        const employees = {};
+
+        rows.forEach(row => {
+            if (!employees[row.id_employee]) {
+                const { phone_number, ...employeeData } = row;
+                employees[row.id_employee] = {
+                    ...employeeData, 
+                    phones: [] 
+                };
+            }
+
+            if (row.phone_number) {
+                employees[row.id_employee].phones.push(row.phone_number);
+            }
+        });
+
+        return Object.values(employees);
+    },
+
+    getById: async (id) => {
+        const query = `
+            SELECT 
+                e.*, 
+                JSON_ARRAYAGG(ep.phone_number) AS phones
+            FROM employees AS e
+            LEFT JOIN employee_phones AS ep ON e.id_employee = ep.employee_id
+            WHERE e.id_employee = ?
+            GROUP BY e.id_employee
+        `;
+        const [rows] = await pool.query(query, [id]);
+
+        const employee = rows[0];
+        if (typeof employee.phones === 'string') {
+            employee.phones = JSON.parse(employee.phones);
+        }
+        return employee;
+    },
+
+    create: async (employeeData, phoneNumbers) => {
+        const connection = await pool.getConnection();
+        try {
+            await connection.beginTransaction();
+
+            const vacationDaysAvailable = 15;
+            const employeeQuery = `
+                INSERT INTO employees (
+                    role_id, position_id, departament_id, city_id, document_type, 
+                    first_name, last_name, document_number, address, email, gender, 
+                    vacation_days_available, password
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            `;
+            const employeeValues = [
+                employeeData.role_id, employeeData.position_id, employeeData.departament_id, employeeData.city_id,
+                employeeData.document_type, employeeData.first_name, employeeData.last_name, employeeData.document_number,
+                employeeData.address, employeeData.email, employeeData.gender, vacationDaysAvailable,
+                employeeData.password
+            ];
+
+            const [employeeResult] = await connection.query(employeeQuery, employeeValues);
+            const newEmployeeId = employeeResult.insertId;
+
+            if (phoneNumbers && phoneNumbers.length > 0) {
+                const phoneValues = phoneNumbers.map(phone => [newEmployeeId, phone]);
+                const phoneQuery = 'INSERT INTO employee_phones (employee_id, phone_number) VALUES ?';
+                await connection.query(phoneQuery, [phoneValues]);
+            }
+
+            await connection.commit();
+            return newEmployeeId;
+
+        } catch (error) {
+            await connection.rollback();
+            throw error;
+        } finally {
+            connection.release();
+        }
+    },
+
+    update: async (id, employeeData, phoneNumbers) => {
+        const connection = await pool.getConnection();
+        try {
+            await connection.beginTransaction();
+
+            const updateQuery = 'UPDATE employees SET ? WHERE id_employee = ?';
+            const [employeeResult] = await connection.query(updateQuery, [employeeData, id]);
+
+            if (employeeResult.affectedRows === 0) {
+                await connection.rollback();
+                return false;
+            }
+
+            await connection.query('DELETE FROM employee_phones WHERE employee_id = ?', [id]);
+
+            if (phoneNumbers && phoneNumbers.length > 0) {
+                const phoneValues = phoneNumbers.map(phone => [id, phone]);
+                const phoneQuery = 'INSERT INTO employee_phones (employee_id, phone_number) VALUES ?';
+                await connection.query(phoneQuery, [phoneValues]);
+            }
+
+            await connection.commit();
+            return true;
+
+        } catch (error) {
+            await connection.rollback();
+            throw error;
+        } finally {
+            connection.release();
+        }
+    },
+
+    delete: async (id) => {
+        const connection = await pool.getConnection();
+        try {
+            await connection.beginTransaction();
+            await connection.query('DELETE FROM employee_phones WHERE employee_id = ?', [id]);
+            const [deleteResult] = await connection.query('DELETE FROM employees WHERE id_employee = ?', [id]);
+
+            await connection.commit();
+            return deleteResult.affectedRows > 0;
+        } catch (error) {
+            await connection.rollback();
+            throw error;
+        } finally {
+            connection.release();
+        }
+    }
+};
+
+module.exports = Employee;
