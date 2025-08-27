@@ -1,4 +1,4 @@
-const pool = require('./db');
+const pool = require('../../database/db');
 
 const Employee = {
     getAll: async () => {
@@ -33,19 +33,46 @@ const Employee = {
         const query = `
             SELECT 
                 e.*, 
-                JSON_ARRAYAGG(ep.phone_number) AS phones
+                ep.phone_number
             FROM employees AS e
             LEFT JOIN employee_phones AS ep ON e.id_employee = ep.employee_id
             WHERE e.id_employee = ?
-            GROUP BY e.id_employee
         `;
         const [rows] = await pool.query(query, [id]);
 
-        const employee = rows[0];
-        if (typeof employee.phones === 'string') {
-            employee.phones = JSON.parse(employee.phones);
-        }
+        const { phone_number, ...employeeData } = rows[0];
+        const employee = { ...employeeData, phones: [] };
+
+        rows.forEach(row => {
+            if (row.phone_number) {
+                employee.phones.push(row.phone_number);
+            }
+        });
+        
         return employee;
+    },
+
+    getByDocumentNumber: async (documentNumber) => {
+        try {
+            const query = `
+                SELECT 
+                    e.*, 
+                    r.nombre AS role_name 
+                FROM 
+                    employees e
+                JOIN 
+                    roles r ON e.role_id = r.id
+                WHERE 
+                    e.document_number = ?
+            `;
+            
+            const [rows] = await pool.query(query, [documentNumber]);
+
+            return rows[0] || null;
+        } catch (error) {
+            console.error('Error al obtener empleado por número de documento:', error);
+            throw error; 
+        }
     },
 
     create: async (employeeData, phoneNumbers) => {

@@ -80,7 +80,43 @@ const employeeController = {
             console.error(error);
             res.status(500).json({ message: 'Error to delete the employee', error: error.message });
         }
+    },
+
+    loginEmployee: async (req, res) => {
+    const { documentNumber, password } = req.body;
+
+    if (!documentNumber || !password) {
+      return res.status(400).json({ message: 'Document number and password are required.' });
     }
+
+    try {
+      const employee = await Employee.getByDocumentNumber(documentNumber);
+
+      if (!employee) {
+        return res.status(401).json({ message: 'Invalid document number or password.' });
+      }
+
+      const isMatch = await bcrypt.compare(password, employee.password);
+
+      if (!isMatch) {
+        return res.status(401).json({ message: 'Invalid document number or password.' });
+      }
+
+      res.status(200).json({
+        message: 'Login successful!',
+        employee: {
+          id: employee.id,
+          first_name: employee.first_name,
+          email: employee.email,
+          role_name: employee.role_name
+        }
+      });
+
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'An error occurred during login', error: error.message });
+    }
+  }
 };
 
 module.exports = employeeController;
