@@ -1,4 +1,4 @@
-const pool = require('./db');
+const pool = require('../../database/db');
 
 const Employee = {
     getAll: async () => {
@@ -50,6 +50,29 @@ const Employee = {
         });
         
         return employee;
+    },
+
+    getByDocumentNumber: async (documentNumber) => {
+        try {
+            const query = `
+                SELECT 
+                    e.*, 
+                    r.nombre AS role_name 
+                FROM 
+                    employees e
+                JOIN 
+                    roles r ON e.role_id = r.id
+                WHERE 
+                    e.document_number = ?
+            `;
+            
+            const [rows] = await pool.query(query, [documentNumber]);
+
+            return rows[0] || null;
+        } catch (error) {
+            console.error('Error al obtener empleado por número de documento:', error);
+            throw error; 
+        }
     },
 
     create: async (employeeData, phoneNumbers) => {
