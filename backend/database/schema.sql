@@ -94,7 +94,7 @@ CREATE TABLE employees (
 	document_number VARCHAR(20),
 	address VARCHAR(255),
 	email VARCHAR(100) UNIQUE,
-   gender ENUM('Masculino','Femenino','Otro'),
+   	gender ENUM('Masculino','Femenino','Otro'),
 	vacation_days_available INT, 
 	password VARCHAR(255),
 	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

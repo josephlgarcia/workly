@@ -1,0 +1,76 @@
+USE workly;
+
+INSERT INTO cities (name) VALUES ("Barranquilla");
+INSERT INTO cities (name) VALUES ("Bogota");
+INSERT INTO cities (name) VALUES ("Medellin");
+INSERT INTO cities (name) VALUES ("Cucuta");
+INSERT INTO cities (name) VALUES ("Bucaramanga");
+INSERT INTO cities (name) VALUES ("Santa Marta");
+INSERT INTO cities (name) VALUES ("Cartagena");
+INSERT INTO cities (name) VALUES ("Sincelejo");
+
+INSERT INTO roles (name) VALUES ("guest");
+INSERT INTO roles (name) VALUES ("user");
+INSERT INTO roles (name) VALUES ("admin");
+
+INSERT INTO positions (name) VALUES ("Developer");
+INSERT INTO positions (name) VALUES ("Product Manager");
+INSERT INTO positions (name) VALUES ("Product Owner");
+INSERT INTO positions (name) VALUES ("psychology");
+INSERT INTO positions (name) VALUES ("Designer");
+INSERT INTO positions (name) VALUES ("Boss");
+
+INSERT INTO departaments (name) VALUES ("Human resources");
+INSERT INTO departaments (name) VALUES ("Development tayrona");
+INSERT INTO departaments (name) VALUES ("Marketing");
+INSERT INTO departaments (name) VALUES ("Accounting");
+
+
+INSERT INTO contract_types (name) VALUES ("Fixed term");
+INSERT INTO contract_types (name) VALUES ("Indefinite term");
+INSERT INTO contract_types (name) VALUES ("Service provision");
+
+INSERT INTO approval_status (name) VALUES ("Approved");
+INSERT INTO approval_status (name) VALUES ("To approve");
+INSERT INTO approval_status (name) VALUES ("Rejected");
+
+INSERT INTO contract_status (name) VALUES ("Active");
+INSERT INTO contract_status (name) VALUES ("Inactive");
+INSERT INTO contract_status (name) VALUES ("Suspended");
+
+INSERT INTO leaves_status (name) VALUES ("Approved");
+INSERT INTO leaves_status (name) VALUES ("Rejected");
+INSERT INTO leaves_status (name) VALUES ("In progress");
+INSERT INTO leaves_status (name) VALUES ("Completed");
+INSERT INTO leaves_status (name) VALUES ("Canceled");
+
+INSERT INTO leaves_types (name, leaves_file) VALUES ("Vacation", False);
+INSERT INTO leaves_types (name, leaves_file) VALUES ("Sick leave", True);
+INSERT INTO leaves_types (name, leaves_file) VALUES ("Paternity leave", True);
+INSERT INTO leaves_types (name, leaves_file) VALUES ("Maternity leave", True);
+INSERT INTO leaves_types (name, leaves_file) VALUES ("Bereavement leave", False);
+INSERT INTO leaves_types (name, leaves_file) VALUES ("Personal Leave", False);
+
+INSERT INTO overtime_types (name, percentage) VALUES ("Standard Overtime", 1.5);
+INSERT INTO overtime_types (name, percentage) VALUES ("Double-Time Overtime", 2);
+INSERT INTO overtime_types (name, percentage) VALUES ("Holiday Overtime", 2);
+INSERT INTO overtime_types (name, percentage) VALUES ("Weekend Overtime", 2);
+
+INSERT INTO social_security_types (name) VALUES ("Sistema General de Seguridad Social en Salud");
+INSERT INTO social_security_types (name) VALUES ("Sistema General de Pensiones");
+INSERT INTO social_security_types (name) VALUES ("Sistema General de Riesgos Laborales");
+
+INSERT INTO employees (
+	role_id, position_id, departament_id, city_id, document_type, 
+    first_name, last_name, document_number, address, email, gender, 
+    vacation_days_available, password) 
+    VALUES (3, 1, 2, 1, "Cedula de Ciudadania", "Diomedes", "Diaz", "777", 
+			"La junta", "diomedes@test.com", "Masculino", 15, "123");
+            
+INSERT INTO employee_phones (employee_id, phone_number) VALUES (1, "555-000");
+INSERT INTO employee_phones (employee_id, phone_number) VALUES (1, "555-001");
+
+INSERT INTO social_securities (social_security_type_id, name, percentage) VALUES (1, "Sura", 1.12);
+INSERT INTO social_securities (social_security_type_id, name, percentage) VALUES (2, "Colpensiones", 1.16);
+INSERT INTO social_securities (social_security_type_id, name, percentage) VALUES (3, "Arl", 1.05);
+
