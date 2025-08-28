@@ -51,7 +51,7 @@ INSERT INTO leaves_types (name, leaves_file) VALUES ("Maternity leave", True);
 INSERT INTO leaves_types (name, leaves_file) VALUES ("Bereavement leave", False);
 INSERT INTO leaves_types (name, leaves_file) VALUES ("Personal Leave", False);
 
-INSERT INTO overtime_types (name, percentage) VALUES ("Standard Overtime", 1.5);
+INSERT INTO overtime_types (name, percentage) VALUES ("Standard Overtime", 0.5);
 INSERT INTO overtime_types (name, percentage) VALUES ("Double-Time Overtime", 2);
 INSERT INTO overtime_types (name, percentage) VALUES ("Holiday Overtime", 2);
 INSERT INTO overtime_types (name, percentage) VALUES ("Weekend Overtime", 2);
