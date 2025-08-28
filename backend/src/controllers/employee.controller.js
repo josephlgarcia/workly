@@ -1,5 +1,6 @@
 const Employee = require('../models/employee.model');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 const employeeController = {
     getAllEmployees: async (req, res) => {
@@ -83,40 +84,47 @@ const employeeController = {
     },
 
     loginEmployee: async (req, res) => {
-    const { documentNumber, password } = req.body;
+        const { document_number, password } = req.body;
 
-    if (!documentNumber || !password) {
-      return res.status(400).json({ message: 'Document number and password are required.' });
-    }
-
-    try {
-      const employee = await Employee.getByDocumentNumber(documentNumber);
-
-      if (!employee) {
-        return res.status(401).json({ message: 'Invalid document number or password.' });
-      }
-
-      const isMatch = await bcrypt.compare(password, employee.password);
-
-      if (!isMatch) {
-        return res.status(401).json({ message: 'Invalid document number or password.' });
-      }
-
-      res.status(200).json({
-        message: 'Login successful!',
-        employee: {
-          id: employee.id,
-          first_name: employee.first_name,
-          email: employee.email,
-          role_name: employee.role_name
+        if (!document_number || !password) {
+            return res.status(400).json({ message: 'Document number and password are required.' });
         }
-      });
 
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: 'An error occurred during login', error: error.message });
+        try {
+            const employee = await Employee.getByDocumentNumber(document_number);
+
+            if (!employee) {
+                return res.status(401).json({ message: 'Invalid document number or password.' });
+            }
+            
+            const isMatch = await bcrypt.compare(password, employee.password);
+
+            if (!isMatch) {
+                return res.status(401).json({ message: 'Invalid document number or password.' });
+            }
+
+            const token = jwt.sign(
+            { id: employee.id_employee, role: employee.role_name },
+            process.env.JWT_SECRET || "superSecretKey",
+            { expiresIn: "1h" }
+            );
+
+            res.status(200).json({
+                message: 'Login successful!',
+                token,
+                employee: {
+                    id: employee.id_employee,
+                    first_name: employee.first_name,
+                    email: employee.email,
+                    role_name: employee.role_name
+                }
+            });
+
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ message: 'An error occurred during login', error: error.message });
+        }
     }
-  }
 };
 
 module.exports = employeeController;
