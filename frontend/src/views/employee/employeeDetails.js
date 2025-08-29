@@ -1,6 +1,4 @@
-
 import { initEmployeeDetailsEvents } from "../../controllers/employeeDetailsController.js"; // import controllers that control the dashboard view
-import { loadDynamicStyle } from "../../utils/styleManager.js"; // import function that controls dynamic CSS
 
 export async function showEmployeeDetails() {
     document.getElementById('employee-subview').innerHTML = `
@@ -34,6 +32,5 @@ export async function showEmployeeDetails() {
 `;
 
 
-    loadDynamicStyle('./src/styles/employeeDetails.css', 'employeeDetails', ['employeeDashboard']);
     initEmployeeDetailsEvents();
 }

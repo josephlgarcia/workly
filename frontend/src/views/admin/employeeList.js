@@ -1,45 +1,45 @@
-import { loadDynamicStyle } from "../../utils/styleManager.js";
 import { initEmployeeListEvents } from "../../controllers/employeeListController.js";
 
 export async function showEmployeeList() {
     document.getElementById('admin-subview').innerHTML = `
-    <h1>Lista de Empleados</h1>
-    <table class="employee-table">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nombre</th>
-                <th>Departamento</th>
-                <th>Cargo</th>
-                <th>Estado</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>EMP001</td>
-                <td>Ana García</td>
-                <td>Recursos Humanos</td>
-                <td>Analista</td>
-                <td>Activo</td>
-            </tr>
-            <tr>
-                <td>EMP002</td>
-                <td>Carlos Pérez</td>
-                <td>TI</td>
-                <td>Desarrollador</td>
-                <td>Activo</td>
-            </tr>
-            <tr>
-                <td>EMP003</td>
-                <td>Lucía Torres</td>
-                <td>Finanzas</td>
-                <td>Contadora</td>
-                <td>Inactivo</td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="container-fluid px-4">
+        <h1 class="mt-4 text-center">Empleados</h1>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item"><a href="#" data-view="dashboard">Dashboard</a></li>
+            <li class="breadcrumb-item active">Empleados</li>
+        </ol>
+        <div class="mb-4">
+            <a href="">
+                <a href="#" data-view="createEmployee" type="button" class="btn btn-primary" >Añadir nuevo empleado</a>
+            </a>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header">
+                <i class="fas fa-table me-1"></i>
+                Tabla Empleados
+            </div>
+            <div class="card-body">
+                <table id="datatablesSimple" class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Documento</th>
+                            <th>N° Contrato</th>
+                            <th>Fecha inicio</th>
+                            <th>Fecha fin</th>
+                            <th>Sueldo</th>
+                            <th>T. Contrato</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody id="employee-table-body">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 `;
 
-    loadDynamicStyle('./src/styles/employeeList.css', 'employeeList', ['adminDashboard']);
     initEmployeeListEvents();
 }

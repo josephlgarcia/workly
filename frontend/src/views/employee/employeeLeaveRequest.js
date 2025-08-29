@@ -1,5 +1,4 @@
 import { initEmployeeLeaveRequestEvents } from "../../controllers/employeeLeaveRequestController.js"; // import controllers that control the dashboard view
-import { loadDynamicStyle } from "../../utils/styleManager.js"; // import function that controls dynamic CSS
 
 export async function showEmployeeLeaveRequest() {
     document.getElementById('employee-subview').innerHTML = `
@@ -34,6 +33,5 @@ export async function showEmployeeLeaveRequest() {
     </form>
 `;
 
-    loadDynamicStyle('./src/styles/employeeLeaveRequest.css', 'employeeLeaveRequest', ['employeeDashboard']);
     initEmployeeLeaveRequestEvents();
 }

@@ -1,6 +1,4 @@
-
 import { initEmployeeDashboardEvents } from "../../controllers/employeeDashboardController.js"; // import controllers that control the dashboard view
-import { loadDynamicStyle } from "../../utils/styleManager.js"; // import function that controls dynamic CSS
 
 export async function showEmployeeDashboard() {
     document.getElementById('app').innerHTML = `
@@ -15,6 +13,6 @@ export async function showEmployeeDashboard() {
     <div id="employee-subview"></div>
 `;
 
-    loadDynamicStyle('./src/styles/employeeDashboard.css', 'employeeDashboard');
+    
     initEmployeeDashboardEvents();
 }

@@ -1,4 +1,3 @@
-import { loadDynamicStyle } from "../../utils/styleManager.js";
 import { initEmployeeContractEvents } from "../../controllers/employeeContractController.js";
 
 export async function showEmployeeContract() {
@@ -34,6 +33,5 @@ export async function showEmployeeContract() {
 
 
 
-    loadDynamicStyle('./src/styles/employeeContract.css', 'employeeContract', ['employeeDashboard']);
     initEmployeeContractEvents();
 }

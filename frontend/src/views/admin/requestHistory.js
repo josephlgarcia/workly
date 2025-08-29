@@ -1,5 +1,5 @@
-import { loadDynamicStyle } from "../../utils/styleManager.js";
-import { initRequestHistoryEvents } from "../../controllers/requestHistoryController.js";
+// import { loadDynamicStyle } from "../../utils/styleManager.js";
+// import { initRequestHistoryEvents } from "../../controllers/requestHistoryController.js";
 
 export async function showRequestHistory() {
     document.getElementById('admin-subview').innerHTML = `
@@ -37,6 +37,6 @@ export async function showRequestHistory() {
 `;
 
 
-    loadDynamicStyle('./src/styles/requestHistory.css', 'requestHistory', ['adminDashboard']);
-    initRequestHistoryEvents();
+    // loadDynamicStyle('./src/styles/requestHistory.css', 'requestHistory', ['adminDashboard']);
+    // initRequestHistoryEvents();
 }

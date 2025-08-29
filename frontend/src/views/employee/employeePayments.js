@@ -1,5 +1,4 @@
 import { initEmployeePaymentsEvents } from "../../controllers/employeePaymentsController.js"; // import controllers that control the dashboard view
-import { loadDynamicStyle } from "../../utils/styleManager.js"; // import function that controls dynamic CSS
 
 export async function showEmployeePayments() {
     document.getElementById('employee-subview').innerHTML = `
@@ -37,6 +36,5 @@ export async function showEmployeePayments() {
 `;
 
 
-    loadDynamicStyle('./src/styles/employeePayments.css', 'employeePayments', ['employeeDashboard']);
     initEmployeePaymentsEvents();
 }

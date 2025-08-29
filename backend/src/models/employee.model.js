@@ -73,7 +73,8 @@ const Employee = {
         SELECT
             CONCAT(e.first_name, ' ', e.last_name) AS full_name,
             e.document_number,
-            c.contract_number,
+            e.password,
+            c.id_contract,
             c.start_date,
             c.end_date,
             c.salary,

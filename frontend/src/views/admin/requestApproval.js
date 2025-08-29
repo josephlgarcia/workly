@@ -1,5 +1,5 @@
-import { loadDynamicStyle } from "../../utils/styleManager.js";
-import { initRequestApprovalEvents } from "../../controllers/requestApprovalController.js";
+// import { loadDynamicStyle } from "../../utils/styleManager.js";
+// import { initRequestApprovalEvents } from "../../controllers/requestApprovalController.js";
 
 export async function showRequestApproval() {
     document.getElementById('admin-subview').innerHTML = `
@@ -43,6 +43,6 @@ export async function showRequestApproval() {
 `;
 
 
-    loadDynamicStyle('./src/styles/requestApproval.css', 'requestApproval', ['adminDashboard']);
-    initRequestApprovalEvents();
+    // loadDynamicStyle('./src/styles/requestApproval.css', 'requestApproval', ['adminDashboard']);
+    // initRequestApprovalEvents();
 }

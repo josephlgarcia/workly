@@ -32,11 +32,11 @@ export async function initLoginEvents() {
                         break;
                     
                     case "Empleado":
-                        location.hash = '#/employee';
+                        location.hash = '#/admin';
                         break;
 
                     default:
-                        location.hash = '#/employee';
+                        location.hash = '#/admin';
                         break;
                 }
             } else {
