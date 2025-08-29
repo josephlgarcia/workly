@@ -7,7 +7,7 @@ const paysheetController = {
             res.json(paysheets);
         } catch (error) {
             console.error(error);
-            res.status(500).json({ message: 'Error al obtener todas las nóminas', error: error.message });
+            res.status(500).json({ message: 'Error to get all paysheets', error: error.message });
         }
     },
 
@@ -15,20 +15,20 @@ const paysheetController = {
         try {
             const paysheet = await Paysheet.getById(req.params.id);
             if (!paysheet) {
-                return res.status(404).json({ message: 'Nómina no encontrada' });
+                return res.status(404).json({ message: 'paysheet not found' });
             }
             res.json(paysheet);
         } catch (error) {
             console.error(error);
-            res.status(500).json({ message: 'Error al obtener la nómina', error: error.message });
+            res.status(500).json({ message: 'Error to get the paysheet', error: error.message });
         }
     },
 
     createPaysheet: async (req, res) => {
-        const { employee_id, bonus, overtimes, socialSecurities } = req.body;
+        const { employee_id, bonus } = req.body;
 
         if (!employee_id) {
-            return res.status(400).json({ message: 'El ID del empleado es un campo requerido.' });
+            return res.status(400).json({ message: 'the employee is required.' });
         }
 
         const paysheetData = {
@@ -37,7 +37,7 @@ const paysheetController = {
         };
 
         try {
-            const newPaysheetId = await Paysheet.create(paysheetData, overtimes, socialSecurities);
+            const newPaysheetId = await Paysheet.create(paysheetData);
             res.status(201).json({ message: 'Nómina creada exitosamente!', id: newPaysheetId });
         } catch (error) {
             console.error(error);

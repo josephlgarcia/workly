@@ -51,15 +51,6 @@ INSERT INTO leaves_types (name, leaves_file) VALUES ("Maternity leave", True);
 INSERT INTO leaves_types (name, leaves_file) VALUES ("Bereavement leave", False);
 INSERT INTO leaves_types (name, leaves_file) VALUES ("Personal Leave", False);
 
-INSERT INTO overtime_types (name, percentage) VALUES ("Standard Overtime", 0.5);
-INSERT INTO overtime_types (name, percentage) VALUES ("Double-Time Overtime", 2);
-INSERT INTO overtime_types (name, percentage) VALUES ("Holiday Overtime", 2);
-INSERT INTO overtime_types (name, percentage) VALUES ("Weekend Overtime", 2);
-
-INSERT INTO social_security_types (name) VALUES ("Sistema General de Seguridad Social en Salud");
-INSERT INTO social_security_types (name) VALUES ("Sistema General de Pensiones");
-INSERT INTO social_security_types (name) VALUES ("Sistema General de Riesgos Laborales");
-
 INSERT INTO employees (
 	role_id, position_id, departament_id, city_id, document_type, 
     first_name, last_name, document_number, address, email, gender, 
@@ -70,7 +61,4 @@ INSERT INTO employees (
 INSERT INTO employee_phones (employee_id, phone_number) VALUES (1, "555-000");
 INSERT INTO employee_phones (employee_id, phone_number) VALUES (1, "555-001");
 
-INSERT INTO social_securities (social_security_type_id, name, percentage) VALUES (1, "Sura", 1.12);
-INSERT INTO social_securities (social_security_type_id, name, percentage) VALUES (2, "Colpensiones", 1.16);
-INSERT INTO social_securities (social_security_type_id, name, percentage) VALUES (3, "Arl", 1.05);
-
+INSERT INTO contracts (employee_id, contract_type_id, contract_status_id, start_date, end_date, salary) VALUES (1,1,1,"2025-08-29","2026-08-29", 2500000);

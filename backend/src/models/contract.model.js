@@ -37,8 +37,8 @@ const Contract = {
                     e.first_name, 
                     e.last_name,
                     e.document_number,
-                    ct.type_name AS contract_type,
-                    cs.status_name AS contract_status
+                    ct.name AS contract_type,
+                    cs.name AS contract_status
                 FROM 
                     contracts c
                 JOIN 

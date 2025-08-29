@@ -67,21 +67,6 @@ CREATE TABLE leaves_types (
 	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
-CREATE TABLE overtime_types ( 
-    id_overtime_type INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
-    name VARCHAR(50) NOT NULL UNIQUE,
-    percentage FLOAT NOT NULL,
-	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-);
-
-CREATE TABLE social_security_types (
-	id_social_security_type INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
-	name VARCHAR(255),
-	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-);
-
 CREATE TABLE employees (
 	id_employee INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
 	role_id INT,
@@ -95,8 +80,9 @@ CREATE TABLE employees (
 	address VARCHAR(255),
 	email VARCHAR(100) UNIQUE,
    	gender ENUM('Masculino','Femenino','Otro'),
-	vacation_days_available INT, 
+	vacation_days_available INT DEFAULT 15, 
 	password VARCHAR(255),
+	status BOOLEAN DEFAULT TRUE,
 	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	
@@ -116,51 +102,16 @@ CREATE TABLE employee_phones (
 	FOREIGN KEY (employee_id) REFERENCES employees (id_employee) ON DELETE SET NULL ON UPDATE CASCADE
 );
 
-CREATE TABLE social_securities (
-	id_social_security INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
-	social_security_type_id INT,
-	name VARCHAR(255),
-	percentage FLOAT NOT NULL,
-	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-
-	FOREIGN KEY (social_security_type_id) REFERENCES social_security_types (id_social_security_type) 
-);
-
 CREATE TABLE paysheets (
 	id_paysheet INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
 	employee_id INT,
 	bonus DECIMAL(10,2),
-	subtotal_payment DECIMAL(18,4), 
-	total_payment DECIMAL(18,4),
+	subtotal_payment DECIMAL(18,2),
+	total_payment DECIMAL(18,2),
 	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	
 	FOREIGN KEY (employee_id) REFERENCES employees (id_employee) ON DELETE SET NULL ON UPDATE CASCADE
-);
-
-CREATE TABLE paysheet_overtime (
-	id_paysheet_overtime INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
-	paysheet_id INT NOT NULL,
-	overtime_type_id INT NOT NULL,
-	hours INT NOT NULL,
-	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-	
-	FOREIGN KEY (paysheet_id) REFERENCES paysheets(id_paysheet) ON DELETE RESTRICT ON UPDATE CASCADE,
-	FOREIGN KEY (overtime_type_id) REFERENCES overtime_types(id_overtime_type) ON DELETE RESTRICT ON UPDATE CASCADE
-);
-
-CREATE TABLE paysheet_social_securities (
-	id_paysheet_social_security INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
-	paysheet_id INT NOT NULL,
-	social_security_id INT NOT NULL,
-	total_discount DECIMAL(10,2), 
-	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-	
-	FOREIGN KEY (paysheet_id) REFERENCES paysheets(id_paysheet) ON DELETE RESTRICT ON UPDATE CASCADE,
-	FOREIGN KEY (social_security_id) REFERENCES social_securities(id_social_security) ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
 CREATE TABLE contracts (
@@ -170,7 +121,7 @@ CREATE TABLE contracts (
 	contract_status_id INT,
 	start_date DATE,
 	end_date DATE,
-	salary DECIMAL(18,4),
+	salary DECIMAL(18,2),
 	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	
@@ -182,8 +133,8 @@ CREATE TABLE contracts (
 CREATE TABLE salary_history ( 
 	id_salary_history INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
 	contract_id INT,
-	old_salary DECIMAL(18,4),
-	new_salary  DECIMAL(18,4),
+	old_salary DECIMAL(18,2),
+	new_salary  DECIMAL(18,2),
 	date DATE,
 	reason TEXT,
 	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
