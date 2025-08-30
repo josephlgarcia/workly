@@ -13,6 +13,7 @@ const leavesTypeRoutes = require('./routes/leaves_type.routes');
 const employeeRoutes = require('./routes/employee.routes');
 const paysheetRoutes = require('./routes/paysheet.routes');
 const contractRoutes = require('./routes/contract.routes');
+const leaveRoutes = require('./routes/leave.routes');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -38,6 +39,7 @@ app.use('/api/v1/leaves-type', leavesTypeRoutes);
 app.use('/api/v1/employee', employeeRoutes);
 app.use('/api/v1/paysheet', paysheetRoutes);
 app.use('/api/v1/contract', contractRoutes);
+app.use('/api/v1/leave', leaveRoutes);
 
 // Start server
 app.listen(PORT, () => {

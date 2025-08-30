@@ -21,25 +21,25 @@ const Employee = {
             ORDER BY e.id_employee;
         `;
 
-        const [rows] = await pool.query(query);
-        const employees = {};
+    const [rows] = await pool.query(query);
+    const employees = {};
 
-        rows.forEach(row => {
-            if (!employees[row.id_employee]) {
-                const { phone_number, ...employeeData } = row;
-                employees[row.id_employee] = {
-                    ...employeeData,
-                    phones: []
-                };
-            }
+    rows.forEach(row => {
+        if (!employees[row.id_employee]) {
+            const { phone_number, ...employeeData } = row;
+            employees[row.id_employee] = {
+                ...employeeData,
+                phones: []
+            };
+        }
 
-            if (row.phone_number) {
-                employees[row.id_employee].phones.push(row.phone_number);
-            }
-        });
+        if (row.phone_number) {
+            employees[row.id_employee].phones.push(row.phone_number);
+        }
+    });
 
-        return Object.values(employees);
-    },
+    return Object.values(employees);
+},
 
 
     getById: async (id) => {
