@@ -40,6 +40,7 @@ app.use('/api/v1/employee', employeeRoutes);
 app.use('/api/v1/paysheet', paysheetRoutes);
 app.use('/api/v1/contract', contractRoutes);
 app.use('/api/v1/leave', leaveRoutes);
+app.use('/uploads', express.static('uploads'));
 
 // Start server
 app.listen(PORT, () => {
