@@ -148,6 +148,8 @@ CREATE TABLE leaves (
 	employee_id INT,
 	leave_status_id INT,
 	leave_type_id INT,
+	start_day DATE,
+	end_day DATE,
 	creation_date DATETIME,
 	description TEXT,
 	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

@@ -2,8 +2,9 @@ const pool = require('../../database/db');
 
 const Employee = {
     getAll: async () => {
-        const query = `
+    const query = `
         SELECT
+            e.id_employee,
             CONCAT(e.first_name, ' ', e.last_name) AS full_name,
             e.document_number,
             e.status,
@@ -11,31 +12,33 @@ const Employee = {
             c.start_date,
             c.end_date,
             c.salary,
-            ct.name AS contract_type_name
+            ct.name AS contract_type_name,
+            ep.phone_number
         FROM employees AS e
         LEFT JOIN contracts AS c ON e.id_employee = c.employee_id
-        LEFT JOIN contract_types AS ct ON c.contract_type_id = ct.id_contract_type;
+        LEFT JOIN contract_types AS ct ON c.contract_type_id = ct.id_contract_type
+        LEFT JOIN employee_phones AS ep ON e.id_employee = ep.employee_id;
     `;
 
-        const [rows] = await pool.query(query);
-        const employees = {};
+    const [rows] = await pool.query(query);
+    const employees = {};
 
-        rows.forEach(row => {
-            if (!employees[row.id_employee]) {
-                const { phone_number, ...employeeData } = row;
-                employees[row.id_employee] = {
-                    ...employeeData,
-                    phones: []
-                };
-            }
+    rows.forEach(row => {
+        if (!employees[row.id_employee]) {
+            const { phone_number, ...employeeData } = row;
+            employees[row.id_employee] = {
+                ...employeeData,
+                phones: []
+            };
+        }
 
-            if (row.phone_number) {
-                employees[row.id_employee].phones.push(row.phone_number);
-            }
-        });
+        if (row.phone_number) {
+            employees[row.id_employee].phones.push(row.phone_number);
+        }
+    });
 
-        return Object.values(employees);
-    },
+    return Object.values(employees);
+},
 
     getById: async (id) => {
         const query = `
