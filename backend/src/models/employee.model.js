@@ -3,19 +3,23 @@ const pool = require('../../database/db');
 const Employee = {
     getAll: async () => {
         const query = `
-        SELECT
-            CONCAT(e.first_name, ' ', e.last_name) AS full_name,
-            e.document_number,
-            e.status,
-            c.id_contract,
-            c.start_date,
-            c.end_date,
-            c.salary,
-            ct.name AS contract_type_name
-        FROM employees AS e
-        LEFT JOIN contracts AS c ON e.id_employee = c.employee_id
-        LEFT JOIN contract_types AS ct ON c.contract_type_id = ct.id_contract_type;
-    `;
+            SELECT
+                e.id_employee,
+                CONCAT(e.first_name, ' ', e.last_name) AS full_name,
+                e.document_number,
+                e.status,
+                c.id_contract,
+                c.start_date,
+                c.end_date,
+                c.salary,
+                ct.name AS contract_type_name,
+                ep.phone_number
+            FROM employees AS e
+            LEFT JOIN contracts AS c ON e.id_employee = c.employee_id
+            LEFT JOIN contract_types AS ct ON c.contract_type_id = ct.id_contract_type
+            LEFT JOIN employee_phones AS ep ON e.id_employee = ep.employee_id
+            ORDER BY e.id_employee;
+        `;
 
         const [rows] = await pool.query(query);
         const employees = {};
@@ -36,6 +40,7 @@ const Employee = {
 
         return Object.values(employees);
     },
+
 
     getById: async (id) => {
         const query = `
@@ -94,38 +99,64 @@ const Employee = {
         }
     },
 
-    create: async (employeeData, phoneNumbers) => {
+    create: async (employeeData, phoneNumbers, contractData) => {
         const connection = await pool.getConnection();
         try {
             await connection.beginTransaction();
 
-            const vacationDaysAvailable = 15;
+            // Insertar empleado
             const employeeQuery = `
-                    INSERT INTO employees (
-                        role_id, position_id, departament_id, city_id, document_type, 
-                        first_name, last_name, document_number, address, email, gender, 
-                        vacation_days_available, password
-                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                `;
-            const employeeValues = [
-                employeeData.role_id, employeeData.position_id, employeeData.departament_id, employeeData.city_id,
-                employeeData.document_type, employeeData.first_name, employeeData.last_name, employeeData.document_number,
-                employeeData.address, employeeData.email, employeeData.gender, vacationDaysAvailable,
-                employeeData.password
-            ];
+            INSERT INTO employees (
+                role_id, position_id, departament_id, city_id, document_type,
+                first_name, last_name, document_number, address, email, gender,
+                vacation_days_available, password
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            `;
 
-            const [employeeResult] = await connection.query(employeeQuery, employeeValues);
-            const newEmployeeId = employeeResult.insertId;
+            const [employeeResult] = await connection.query(employeeQuery, [
+            employeeData.role_id,
+            employeeData.position_id,
+            employeeData.departament_id,
+            employeeData.city_id,
+            employeeData.document_type,
+            employeeData.first_name,
+            employeeData.last_name,
+            employeeData.document_number,
+            employeeData.address,
+            employeeData.email,
+            employeeData.gender,
+            employeeData.vacation_days_available || 15,
+            employeeData.password
+            ]);
 
+            const employeeId = employeeResult.insertId;
+
+            // Insertar teléfonos (solo si hay)
             if (phoneNumbers && phoneNumbers.length > 0) {
-                const phoneValues = phoneNumbers.map(phone => [newEmployeeId, phone]);
-                const phoneQuery = 'INSERT INTO employee_phones (employee_id, phone_number) VALUES ?';
-                await connection.query(phoneQuery, [phoneValues]);
+            const phoneQuery = 'INSERT INTO employee_phones (employee_id, phone_number) VALUES ?';
+            const phoneValues = phoneNumbers.map(phone => [employeeId, phone]);
+            await connection.query(phoneQuery, [phoneValues]);
             }
 
-            await connection.commit();
-            return newEmployeeId;
+            // Insertar contrato
+            const contractQuery = `
+            INSERT INTO contracts (
+                employee_id, contract_type_id, contract_status_id,
+                start_date, end_date, salary
+            ) VALUES (?, ?, ?, ?, ?, ?)
+            `;
 
+            await connection.query(contractQuery, [
+            employeeId,
+            contractData.id_contract_type,
+            contractData.id_contract_status,
+            contractData.start_date,
+            contractData.end_date,
+            contractData.salary
+            ]);
+
+            await connection.commit();
+            return { success: true, employeeId };
         } catch (error) {
             await connection.rollback();
             throw error;
@@ -133,6 +164,7 @@ const Employee = {
             connection.release();
         }
     },
+
 
     update: async (id, employeeData, phoneNumbers) => {
         const connection = await pool.getConnection();

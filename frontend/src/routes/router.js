@@ -12,6 +12,7 @@ import { showEmployeeDetails } from '../views/employee/employeeDetails.js';
 import { showEmployeeLeaveHistory } from '../views/employee/employeeLeaveHistory.js';
 import { showEmployeeLeaveRequest } from '../views/employee/employeeLeaveRequest.js';
 import { showEmployeePayments } from '../views/employee/employeePayments.js';
+import { showCreateEmployee } from '../views/admin/createEmployee.js';
 
 /* We define the application routes and associate them with the corresponding view functions */
 const routes = {
@@ -21,11 +22,12 @@ const routes = {
     '#/admin/employeeList': showEmployeeList,
     '#/admin/requestApproval': showRequestApproval,
     '#/admin/requestsHistory': showRequestHistory,
+    '#/admin/createEmployee': showCreateEmployee,
     '#/employee/Contract': showEmployeeContract,
     '#/employee/Details': showEmployeeDetails,
     '#/employee/LeaveHistory': showEmployeeLeaveHistory,
     '#/employee/LeaveRequest': showEmployeeLeaveRequest,
-    '#/employee/Payments': showEmployeePayments
+    '#/employee/Payments': showEmployeePayments,
 }
 
 
