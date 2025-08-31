@@ -1,0 +1,64 @@
+<div class="container-fluid px-4">
+    <h1 class="mt-4 text-center">Solicitudes de Permiso</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="#" data-view="dashboard">Dashboard</a></li>
+        <li class="breadcrumb-item active">Permisos</li>
+    </ol>
+    
+    <div class="mb-4 d-flex justify-content-between align-items-center">
+        <a href="#" data-view="createLeave" type="button" class="btn btn-primary">Añadir nueva solicitud</a>
+        
+        <div class="filter-controls d-flex align-items-center flex-wrap">
+            <div class="me-3 mb-2">
+                <label for="type-filter" class="form-label mb-0 me-2">Buscar por tipo:</label>
+                <input type="text" id="type-filter" class="form-control" placeholder="Escribe el tipo...">
+            </div>
+
+            <div class="me-3 mb-2">
+                <label for="status-filter" class="form-label mb-0 me-2">Filtrar por estado:</label>
+                <select id="status-filter" class="form-select">
+                    <option value="all" selected>Todos</option>
+                    <option value="Approved">Aprobado</option>
+                    <option value="Rejected">Rechazado</option>
+                    <option value="In progress">En progreso</option>
+                    <option value="Completed">Completado</option>
+                    <option value="Canceled">Cancelado</option>
+                </select>
+            </div>
+            
+            <div class="me-3 mb-2">
+                <label for="start-date-filter" class="form-label mb-0 me-2">Fecha inicio:</label>
+                <input type="date" id="start-date-filter" class="form-control">
+            </div>
+
+            <div class="me-3 mb-2">
+                <label for="end-date-filter" class="form-label mb-0 me-2">Fecha fin:</label>
+                <input type="date" id="end-date-filter" class="form-control">
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <i class="fas fa-table me-1"></i>
+            Tabla de Solicitudes de Permiso
+        </div>
+        <div class="card-body">
+            <table id="leaves-table" class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>ID Solicitud</th>
+                        <th>Nombre Empleado</th>
+                        <th>Tipo de Permiso</th>
+                        <th>Estado</th>
+                        <th>Fecha Inicio</th>
+                        <th>Fecha Fin</th>
+                        <th>Descripción</th>
+                    </tr>
+                </thead>
+                <tbody id="leaves-table-body">
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
