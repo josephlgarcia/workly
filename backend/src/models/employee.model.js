@@ -45,17 +45,30 @@ const Employee = {
     getById: async (id) => {
         const query = `
         SELECT
-            CONCAT(e.first_name, ' ', e.last_name) AS full_name,
+            e.id_employee,
+            e.first_name,
+            e.last_name,
             e.document_number,
+            e.document_type,
+            e.email,
+            e.address,
+            e.gender,
+            e.role_id,
+            e.position_id,
+            e.departament_id,
+            e.city_id,
+            ph.phone_number,
+            e.password,
             e.status,
             c.id_contract,
             c.start_date,
             c.end_date,
             c.salary,
-            ct.name AS contract_type_name
+            ct.name AS contract_type
         FROM employees AS e
         LEFT JOIN contracts AS c ON e.id_employee = c.employee_id
         LEFT JOIN contract_types AS ct ON c.contract_type_id = ct.id_contract_type
+        LEFT JOIN employee_phones AS ph ON ph.employee_id = e.id_employee
         WHERE e.id_employee = ?;
     `;
         const [rows] = await pool.query(query, [id]);
@@ -104,7 +117,6 @@ const Employee = {
         try {
             await connection.beginTransaction();
 
-            // Insertar empleado
             const employeeQuery = `
             INSERT INTO employees (
                 role_id, position_id, departament_id, city_id, document_type,
@@ -131,14 +143,12 @@ const Employee = {
 
             const employeeId = employeeResult.insertId;
 
-            // Insertar teléfonos (solo si hay)
             if (phoneNumbers && phoneNumbers.length > 0) {
             const phoneQuery = 'INSERT INTO employee_phones (employee_id, phone_number) VALUES ?';
             const phoneValues = phoneNumbers.map(phone => [employeeId, phone]);
             await connection.query(phoneQuery, [phoneValues]);
             }
 
-            // Insertar contrato
             const contractQuery = `
             INSERT INTO contracts (
                 employee_id, contract_type_id, contract_status_id,
@@ -166,11 +176,12 @@ const Employee = {
     },
 
 
-    update: async (id, employeeData, phoneNumbers) => {
+    update: async (id, employeeData, phoneNumbers, contractData) => {
         const connection = await pool.getConnection();
         try {
             await connection.beginTransaction();
 
+            // 🔹 Actualizar datos del empleado
             const updateQuery = 'UPDATE employees SET ? WHERE id_employee = ?';
             const [employeeResult] = await connection.query(updateQuery, [employeeData, id]);
 
@@ -179,12 +190,28 @@ const Employee = {
                 return false;
             }
 
+            // 🔹 Actualizar teléfonos
             await connection.query('DELETE FROM employee_phones WHERE employee_id = ?', [id]);
-
             if (phoneNumbers && phoneNumbers.length > 0) {
                 const phoneValues = phoneNumbers.map(phone => [id, phone]);
                 const phoneQuery = 'INSERT INTO employee_phones (employee_id, phone_number) VALUES ?';
                 await connection.query(phoneQuery, [phoneValues]);
+            }
+
+            // 🔹 Actualizar contrato
+            if (contractData) {
+                const updateContractQuery = `
+                    UPDATE contracts 
+                    SET contract_type_id = ?, contract_status_id = ?, start_date = ?, end_date = ?, salary = ? 
+                    WHERE employee_id = ?`;
+                await connection.query(updateContractQuery, [
+                    contractData.id_contract_type,
+                    contractData.id_contract_status,
+                    contractData.start_date,
+                    contractData.end_date,
+                    contractData.salary,
+                    id
+                ]);
             }
 
             await connection.commit();
@@ -197,6 +224,7 @@ const Employee = {
             connection.release();
         }
     },
+
 
     delete: async (id) => {
         const connection = await pool.getConnection();

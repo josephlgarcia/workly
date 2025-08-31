@@ -6,12 +6,12 @@ export async function showEmployeeList() {
     <div class="container-fluid px-4">
         <h1 class="mt-4 text-center">Empleados</h1>
         <ol class="breadcrumb mb-4">
-            <li class="breadcrumb-item"><a href="#" data-view="dashboard">Dashboard</a></li>
+            <li class="breadcrumb-item"><a href="#/admin" data-view="dashboard">Dashboard</a></li>
             <li class="breadcrumb-item active">Empleados</li>
         </ol>
         <div class="mb-4">
             <a href="">
-                <a id="create-employee" href="#" data-view="createEmployee" type="button" class="btn btn-primary" >Añadir nuevo empleado</a>
+                <a id="create-employee" href="#/admin/createEmployee" data-view="createEmployee" type="button" class="btn btn-primary" >Añadir nuevo empleado</a>
             </a>
         </div>
 
@@ -21,8 +21,8 @@ export async function showEmployeeList() {
                 Tabla Empleados
             </div>
             <div class="card-body">
-                <table id="datatablesSimple" class="table table-striped">
-                    <thead>
+                <table id="datatablesSimple" class="table table-striped table-hover align-middle text-center">
+                    <thead class="table-light">
                         <tr>
                             <th>Nombre</th>
                             <th>Documento</th>
@@ -32,6 +32,7 @@ export async function showEmployeeList() {
                             <th>Sueldo</th>
                             <th>T. Contrato</th>
                             <th>Estado</th>
+                            <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody id="employee-table-body">
@@ -43,7 +44,6 @@ export async function showEmployeeList() {
 `;
     try {
     const employees = await api.getData('http://localhost:3001/api/v1/employee');
-    console.log('Datos de empleados:', employees);
 
     const tableBody = document.querySelector('#employee-table-body');
     if (tableBody) {
@@ -60,7 +60,16 @@ export async function showEmployeeList() {
                         <td>${employee.end_date}</td>
                         <td>${employee.salary}</td>
                         <td>${employee.contract_type_name}</td>
-                        <td><span class="p-2 rounded text-white bg-${classStatus}">${status}</span></td>
+                        <td><span class="badge bg-${classStatus}">${status}</span></td>
+                        <td>
+                            <a href="#/admin/editEmployee/${employee.id_employee}" 
+                                class="btn btn-sm btn-primary rounded-pill me-1">
+                                <i class="bi bi-pencil-fill"></i>
+                            </a>
+                            <button class="btn btn-sm btn-danger rounded-pill btn-delete-employee" data-id="${employee.id_employee}">
+                                <i class="bi bi-trash-fill"></i>
+                            </button>
+                        </td>
                     `;
         tableBody.appendChild(row);
         });

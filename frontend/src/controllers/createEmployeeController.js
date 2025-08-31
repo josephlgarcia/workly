@@ -1,6 +1,13 @@
 import { api } from '../api/api.js';
 
-export async function initCreateEmployeeEvents() {    
+export async function initCreateEmployeeEvents() {
+    document.querySelectorAll('a[data-link]').forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            location.hash = e.target.getAttribute('href');
+        });
+    });
+    
     document.getElementById("employeeForm").addEventListener("submit", async (event) => {
         event.preventDefault();
 
@@ -34,18 +41,16 @@ export async function initCreateEmployeeEvents() {
         };
 
         try {
-            const response = await fetch("http://localhost:3001/api/v1/employee", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(employeePayload),
-            });
+            const response = await api.postData(
+                'http://localhost:3001/api/v1/employee',
+                employeePayload
+            );
+            
+            console.log("Respuesta del servidor:", response);
 
-            const data = await response.json();
-            if (response.ok) {
-            alert("Empleado creado con éxito ✅");
-            } else {
-            alert("Error: " + data.message);
-            }
+            alert(response.message || "Empleado creado con éxito ✅");
+            location.hash = '#/admin/employeeList';
+            
         } catch (error) {
             console.error("Error en la petición:", error);
             alert("Error de conexión con el servidor.");
