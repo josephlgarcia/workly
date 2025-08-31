@@ -14,6 +14,16 @@ const leaveController = {
         }
     },
 
+    getLeavesByEmployeeId: async (req, res) => {
+        try {
+            const leaves = await Leave.getByEmployeeId(req.params.id);
+            res.status(200).json(leaves);
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ message: 'Error al obtener las solicitudes del empleado', error: error.message });
+        }
+    },
+
     getLeaveById: async (req, res) => {
         try {
             const leave = await Leave.getById(req.params.id);

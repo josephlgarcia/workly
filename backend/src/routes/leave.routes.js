@@ -3,6 +3,7 @@ const router = express.Router();
 const leaveController = require('../controllers/leave.controller');
 const upload = require('../config/multer');
 
+router.get('/employee/:id', leaveController.getLeavesByEmployeeId);
 router.get('/', leaveController.getAllLeaves); 
 router.get('/:id', leaveController.getLeaveById); 
 

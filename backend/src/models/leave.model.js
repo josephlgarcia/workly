@@ -3,7 +3,6 @@ const pool = require('../../database/db');
 const Leave = {
     create: async (leaveData) => {
         try {
-
             const query = `
                 INSERT INTO leaves (employee_id, leave_status_id, creation_date, leave_type_id, start_day, end_day, description)
                 VALUES (?, ?, ?, ?, ?, ?, ?);
@@ -30,6 +29,8 @@ const Leave = {
             const query = `
                 SELECT
                     l.id_leave,
+                    l.employee_id,
+                    l.leave_status_id,
                     e.first_name,
                     e.last_name,
                     ls.name AS status,
@@ -41,7 +42,6 @@ const Leave = {
                 LEFT JOIN employees AS e ON l.employee_id = e.id_employee
                 LEFT JOIN leaves_status AS ls ON l.leave_status_id = ls.id_leave_status
                 LEFT JOIN leaves_types AS lt ON l.leave_type_id = lt.id_leave_type
-                ORDER BY l.start_day DESC;
             `;
             const [rows] = await pool.query(query);
             return rows;
@@ -56,6 +56,8 @@ const Leave = {
             const query = `
                 SELECT
                     l.id_leave,
+                    l.employee_id,
+                    l.leave_status_id,
                     e.first_name,
                     e.last_name,
                     ls.name AS status,
@@ -77,6 +79,33 @@ const Leave = {
         }
     },
 
+    getByEmployeeId: async (employeeId) => {
+        try {
+            const query = `
+                SELECT
+                    l.id_leave,
+                    l.employee_id,
+                    l.leave_status_id,
+                    e.first_name,
+                    e.last_name,
+                    ls.name AS status,
+                    lt.name AS leaves_type,
+                    l.start_day,
+                    l.end_day,
+                    l.description
+                FROM leaves AS l
+                LEFT JOIN employees AS e ON l.employee_id = e.id_employee
+                LEFT JOIN leaves_status AS ls ON l.leave_status_id = ls.id_leave_status
+                LEFT JOIN leaves_types AS lt ON l.leave_type_id = lt.id_leave_type
+                WHERE l.employee_id = ?;
+            `;
+            const [rows] = await pool.query(query, [employeeId]);
+            return rows;
+        } catch (error) {
+            console.error('Error getting leave requests by employee ID:', error);
+            throw error;
+        }
+    },
     update: async (id, updatedData) => {
         try {
             const query = 'UPDATE leaves SET ? WHERE id_leave = ?';

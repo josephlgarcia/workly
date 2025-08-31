@@ -38,13 +38,6 @@ CREATE TABLE contract_types (
 	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
-CREATE TABLE approval_status (
-	id_approval_status INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
-	name VARCHAR(255) NOT NULL UNIQUE,  
-	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-);
-
 CREATE TABLE contract_status (
 	id_contract_status INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
 	name VARCHAR(100) NOT NULL UNIQUE, 
@@ -172,16 +165,3 @@ CREATE TABLE attachments (
 	FOREIGN KEY (leave_id) REFERENCES leaves (id_leave) 
 );
 
-CREATE TABLE approvals (
-	id_approval INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
-	approver_id INT,
-	leave_id INT,
-	approval_status_id INT,
-	approval_date DATE,
-	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-	
-	FOREIGN KEY (approver_id) REFERENCES employees (id_employee), 
-	FOREIGN KEY (leave_id) REFERENCES leaves (id_leave),
-	FOREIGN KEY (approval_status_id) REFERENCES approval_status (id_approval_status)
-);

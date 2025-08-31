@@ -1,6 +1,6 @@
 import { renderEmployeeView } from './employee.js';
 import { renderLeaveView } from './leave.js';
-import { renderLeavesView } from './leaves.js';
+import { initializeLeavesView } from './leaves.js';
 
 const routes = {
     dashboard: async () => {
@@ -9,10 +9,19 @@ const routes = {
         const response = await fetch('/src/views/dashboard.html');
         const html = await response.text();
         app.innerHTML = html;
+        // Ahora, después de cargar el HTML, inicializamos la vista.
+        initializeLeavesView();
     },
     employee: renderEmployeeView,
-    leave: renderLeaveView, // For the creation form
-    leaves: renderLeavesView // For the list/table view
+    leave: renderLeaveView,
+    leaves: async () => {
+        const app = document.getElementById('app');
+        if (!app) return;
+        const response = await fetch('/src/views/leaves.html');
+        const html = await response.text();
+        app.innerHTML = html;
+        initializeLeavesView();
+    }
 };
 
 export async function loadView(viewName) {

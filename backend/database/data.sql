@@ -9,7 +9,6 @@ INSERT INTO cities (name) VALUES ("Santa Marta");
 INSERT INTO cities (name) VALUES ("Cartagena");
 INSERT INTO cities (name) VALUES ("Sincelejo");
 
-INSERT INTO roles (name) VALUES ("guest");
 INSERT INTO roles (name) VALUES ("user");
 INSERT INTO roles (name) VALUES ("admin");
 
@@ -29,10 +28,6 @@ INSERT INTO departaments (name) VALUES ("Accounting");
 INSERT INTO contract_types (name) VALUES ("Fixed term");
 INSERT INTO contract_types (name) VALUES ("Indefinite term");
 INSERT INTO contract_types (name) VALUES ("Service provision");
-
-INSERT INTO approval_status (name) VALUES ("Approved");
-INSERT INTO approval_status (name) VALUES ("To approve");
-INSERT INTO approval_status (name) VALUES ("Rejected");
 
 INSERT INTO contract_status (name) VALUES ("Active");
 INSERT INTO contract_status (name) VALUES ("Inactive");
@@ -55,9 +50,7 @@ INSERT INTO employees (
 	role_id, position_id, departament_id, city_id, document_type, 
     first_name, last_name, document_number, address, email, gender, 
     vacation_days_available, password) 
-    VALUES (3, 1, 2, 1, "Cedula de Ciudadania", "Diomedes", "Diaz", "777", 
-			"La junta", "diomedes@test.com", "Masculino", 15, "123"),
-            (3, 1, 1, 1, "Cedula de Ciudadania", 'joseph', 'garcia', '1043438196',
+    VALUES (3, 1, 1, 1, "Cedula de Ciudadania", 'joseph', 'garcia', '1043438196',
             "kr 7 # 20-20", 'joseph@email.com', 'Masculino', 15,
         '$2b$10$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36bE.2zVh4s6k6RSmT.GH5K');
             
