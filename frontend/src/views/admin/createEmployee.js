@@ -5,8 +5,8 @@ export function showCreateEmployee() {
         <div class="container-fluid px-4">
         <h1 class="mt-4 text-center">Crear Empleado</h1>
         <ol class="breadcrumb mb-4">
-            <li class="breadcrumb-item"><a href="#" data-view="dashboard">Dashboard</a></li>
-            <li class="breadcrumb-item"><a href="#" data-view="employee">Empleados</a></li>
+            <li class="breadcrumb-item"><a href="#/admin" data-view="dashboard">Dashboard</a></li>
+            <li class="breadcrumb-item"><a href="#/admin/employeeList" data-view="employee">Empleados</a></li>
             <li class="breadcrumb-item active">Crear empleado</li>
         </ol>
 
