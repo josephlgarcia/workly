@@ -17,26 +17,25 @@ export async function initLoginEvents() {
                 'http://localhost:3001/api/v1/employee/login', 
                 user
             );
+
+            console.log(validUser);
+            
             
             if (validUser && validUser.token) {
-                // Guardamos token y datos del empleado
                 localStorage.setItem("token", validUser.token);
-                localStorage.setItem("employee", JSON.stringify(validUser.employee));
+                localStorage.setItem("user", JSON.stringify(validUser.employee));
 
-                alert("Login exitoso");
-
-                // Redirección según rol
                 switch (validUser.employee.role_name) {
-                    case "Administrador":
+                    case "admin":
                         location.hash = '#/admin';
                         break;
                     
-                    case "Empleado":
-                        location.hash = '#/admin';
+                    case "employee":
+                        location.hash = '#/employee';
                         break;
 
                     default:
-                        location.hash = '#/admin';
+                        location.hash = '#/employee';
                         break;
                 }
             } else {

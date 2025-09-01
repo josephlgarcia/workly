@@ -19,7 +19,7 @@ const LeaveStatus = {
 
     update: async (id, leaveStatus) => {
         const { name } = leaveStatus;
-        await pool.query('UPDATE leave_status SET name = ? WHERE id_leave_status = ?', [name, id]);
+        await pool.query('UPDATE leaves_status SET name = ? WHERE id_leave_status = ?', [name, id]);
         return true;
     },
 

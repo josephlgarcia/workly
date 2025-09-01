@@ -11,7 +11,7 @@ export function showAdminDashboard() {
         <main class="d-flex flex-grow-1">
             <div id="sidebar" style="width: 250px;">
             <aside class="d-flex flex-column flex-shrink-0 p-3 bg-light h-100">
-                <span class="fs-4">el propio menú</span>
+                <span class="fs-4">Menú Administrador</span>
                 <hr>
                 <ul class="nav nav-pills flex-column mb-auto">
                     <li class="nav-item">

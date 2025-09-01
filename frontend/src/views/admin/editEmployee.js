@@ -61,7 +61,7 @@ export async function showEditEmployee() {
                         <label class="form-label">Rol</label>
                         <select id="edit-role_id" class="form-select" name="role_id" required>
                             <option selected disabled>Seleccione...</option>
-                            <option value="3">Administrador</option>
+                            <option value="1">Administrador</option>
                             <option value="2">Empleado</option>
                         </select>
                     </div>

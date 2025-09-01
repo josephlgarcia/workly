@@ -36,11 +36,11 @@ const adminSubRoutes = {
 
 // Subrutas employee (se renderizan en #employee-subview)
 const employeeSubRoutes = {
-    '#/employee/Contract': showEmployeeContract,
-    '#/employee/Details': showEmployeeDetails,
-    '#/employee/LeaveHistory': showEmployeeLeaveHistory,
-    '#/employee/LeaveRequest': showEmployeeLeaveRequest,
-    '#/employee/Payments': showEmployeePayments,
+    '#/employee/contract': showEmployeeContract,
+    '#/employee/details': showEmployeeDetails,
+    '#/employee/leaveHistory': showEmployeeLeaveHistory,
+    '#/employee/leaveRequest': showEmployeeLeaveRequest,
+    '#/employee/payments': showEmployeePayments,
 };
 
 

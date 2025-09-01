@@ -88,20 +88,26 @@ const Employee = {
     getByDocumentNumber: async (document_number) => {
         try {
             const query = `
-        SELECT
-            CONCAT(e.first_name, ' ', e.last_name) AS full_name,
-            e.document_number,
-            e.password,
-            c.id_contract,
-            c.start_date,
-            c.end_date,
-            c.salary,
-            ct.name AS contract_type_name
-        FROM employees AS e
-        LEFT JOIN contracts AS c ON e.id_employee = c.employee_id
-        LEFT JOIN contract_types AS ct ON c.contract_type_id = ct.id_contract_type
-        WHERE e.document_number = ?;
-    `;
+            SELECT
+                e.id_employee,
+                e.first_name,
+                e.last_name,
+                e.email,
+                r.name AS role_name,
+                CONCAT(e.first_name, ' ', e.last_name) AS full_name,
+                e.document_number,
+                e.password,
+                c.id_contract,
+                c.start_date,
+                c.end_date,
+                c.salary,
+                ct.name AS contract_type_name
+            FROM employees AS e
+            LEFT JOIN contracts AS c ON e.id_employee = c.employee_id
+            LEFT JOIN contract_types AS ct ON c.contract_type_id = ct.id_contract_type
+            LEFT JOIN roles AS r ON r.id_role = e.role_id
+            WHERE e.document_number = ?;
+        `;
 
             const [rows] = await pool.query(query, [document_number]);
 
