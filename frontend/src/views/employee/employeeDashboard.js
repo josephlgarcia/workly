@@ -48,8 +48,101 @@ export async function showEmployeeDashboard() {
                 </div>
 
                 <div id="employee-subview" class="flex-grow-1 overflow-auto p-3">
-                    <h2>Bienvenido al Panel de Empleado</h2>
-                    <p>Selecciona una opción del menú para ver más detalles.</p>
+                    <div class="row g-3 mb-4 text-center">
+                        <div class="col-md-2">
+                        <div class="card shadow-sm border-0">
+                            <div class="card-body bg-success text-white rounded">
+                            <h6 class="mb-1">Headcount</h6>
+                            <h3 class="fw-bold">10</h3>
+                            </div>
+                        </div>
+                        </div>
+                        <div class="col-md-2">
+                        <div class="card shadow-sm border-0">
+                            <div class="card-body bg-warning text-dark rounded">
+                            <h6 class="mb-1">New Hiring</h6>
+                            <h3 class="fw-bold">5</h3>
+                            </div>
+                        </div>
+                        </div>
+                        <div class="col-md-2">
+                        <div class="card shadow-sm border-0">
+                            <div class="card-body bg-danger text-white rounded">
+                            <h6 class="mb-1">Attrition</h6>
+                            <h3 class="fw-bold">5</h3>
+                            </div>
+                        </div>
+                        </div>
+                        <div class="col-md-3">
+                        <div class="card shadow-sm border-0">
+                            <div class="card-body bg-pink text-white rounded">
+                            <h6 class="mb-1">Turnover Ratio</h6>
+                            <h3 class="fw-bold">20.83%</h3>
+                            </div>
+                        </div>
+                        </div>
+                        <div class="col-md-3">
+                        <div class="card shadow-sm border-0">
+                            <div class="card-body bg-info text-white rounded">
+                            <h6 class="mb-1">Average Age</h6>
+                            <h3 class="fw-bold">44.20</h3>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+
+                    <!-- Charts & Stats -->
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                        <div class="card shadow-sm">
+                            <div class="card-header fw-bold">Headcount by Gender</div>
+                            <div class="card-body">
+                            <canvas id="chart-gender"></canvas>
+                            </div>
+                        </div>
+                        </div>
+                        <div class="col-md-4">
+                        <div class="card shadow-sm">
+                            <div class="card-header fw-bold">Headcount by Contract Type</div>
+                            <div class="card-body">
+                            <canvas id="chart-contract"></canvas>
+                            </div>
+                        </div>
+                        </div>
+                        <div class="col-md-4">
+                        <div class="card shadow-sm">
+                            <div class="card-header fw-bold">Headcount by Age Group</div>
+                            <div class="card-body">
+                            <canvas id="chart-age"></canvas>
+                            </div>
+                        </div>
+                        </div>
+
+                        <div class="col-md-4">
+                        <div class="card shadow-sm">
+                            <div class="card-header fw-bold">Headcount by City</div>
+                            <div class="card-body">
+                            <canvas id="chart-city"></canvas>
+                            </div>
+                        </div>
+                        </div>
+                        <div class="col-md-4">
+                        <div class="card shadow-sm">
+                            <div class="card-header fw-bold">Headcount by Department</div>
+                            <div class="card-body">
+                            <canvas id="chart-department"></canvas>
+                            </div>
+                        </div>
+                        </div>
+                        <div class="col-md-4">
+                        <div class="card shadow-sm">
+                            <div class="card-header fw-bold">Headcount by Job Position</div>
+                            <div class="card-body">
+                            <canvas id="chart-position"></canvas>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
                 </div>
             </main>
 
