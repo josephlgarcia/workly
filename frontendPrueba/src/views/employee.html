@@ -1,0 +1,39 @@
+ <div class="container-fluid px-4">
+    <h1 class="mt-4 text-center">Empleados</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="#"
+                data-view="dashboard">Dashboard</a></li>
+        <li class="breadcrumb-item active">Empleados</li>
+    </ol>
+    <div class="mb-4">
+        <a href>
+            <a href="#" data-view="createEmployee" type="button"
+                class="btn btn-primary">Añadir nuevo empleado</a>
+        </a>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <i class="fas fa-table me-1"></i>
+            Tabla Empleados
+        </div>
+        <div class="card-body">
+            <table id="datatablesSimple" class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Documento</th>
+                        <th>N° Contrato</th>
+                        <th>Fecha inicio</th>
+                        <th>Fecha fin</th>
+                        <th>Sueldo</th>
+                        <th>T. Contrato</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody id="employee-table-body">
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

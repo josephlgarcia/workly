@@ -5,12 +5,15 @@ const cityRoutes = require('./routes/city.routes');
 const roleRoutes = require('./routes/role.routes');
 const positionRoutes = require('./routes/position.routes');
 const departamentRoutes = require('./routes/departament.routes');
+const contractStatusRoutes = require('./routes/contract_status.routes');
 const contractTypeRoutes = require('./routes/contract_type.routes');
 const approvalStatusRoutes = require('./routes/approval_status.routes');
 const leavesStatusRoutes = require('./routes/leaves_status.routes');
-const socialSecurityTypeRoutes = require('./routes/social_security_type.routes');
 const leavesTypeRoutes = require('./routes/leaves_type.routes');
-const overtimeTypeRoutes = require('./routes/overtime_type.routes');
+const employeeRoutes = require('./routes/employee.routes');
+const paysheetRoutes = require('./routes/paysheet.routes');
+const contractRoutes = require('./routes/contract.routes');
+const leaveRoutes = require('./routes/leave.routes');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -28,13 +31,16 @@ app.use('/api/v1/city', cityRoutes);
 app.use('/api/v1/role', roleRoutes);
 app.use('/api/v1/position', positionRoutes);
 app.use('/api/v1/departament', departamentRoutes);
+app.use('/api/v1/contract-status', contractStatusRoutes);
 app.use('/api/v1/contract-type', contractTypeRoutes);
 app.use('/api/v1/approval-status', approvalStatusRoutes);
 app.use('/api/v1/leaves-status', leavesStatusRoutes);
-app.use('/api/v1/social-security-type', socialSecurityTypeRoutes);
 app.use('/api/v1/leaves-type', leavesTypeRoutes);
-app.use('/api/v1/overtime-type', overtimeTypeRoutes);
-
+app.use('/api/v1/employee', employeeRoutes);
+app.use('/api/v1/paysheet', paysheetRoutes);
+app.use('/api/v1/contract', contractRoutes);
+app.use('/api/v1/leave', leaveRoutes);
+app.use('/uploads', express.static('uploads'));
 
 // Start server
 app.listen(PORT, () => {

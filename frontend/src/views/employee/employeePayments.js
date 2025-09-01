@@ -1,42 +1,40 @@
-import { initEmployeePaymentsEvents } from "../../controllers/employeePaymentsController.js"; // import controllers that control the dashboard view
-import { loadDynamicStyle } from "../../utils/styleManager.js"; // import function that controls dynamic CSS
+import { api } from '../../api/api.js'
 
 export async function showEmployeePayments() {
     document.getElementById('employee-subview').innerHTML = `
-    <h1>Historial de Pagos</h1>
-    <table class="payments-table">
-        <thead>
-            <tr>
-                <th>Fecha</th>
-                <th>Monto</th>
-                <th>Concepto</th>
-                <th>Estado</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>2025-07-31</td>
-                <td>1,200 €</td>
-                <td>Salario Julio 2025</td>
-                <td><span class="status paid">Pagado</span></td>
-            </tr>
-            <tr>
-                <td>2025-06-30</td>
-                <td>1,200 €</td>
-                <td>Salario Junio 2025</td>
-                <td><span class="status paid">Pagado</span></td>
-            </tr>
-            <tr>
-                <td>2025-05-31</td>
-                <td>1,200 €</td>
-                <td>Salario Mayo 2025</td>
-                <td><span class="status paid">Pagado</span></td>
-            </tr>
-        </tbody>
-    </table>
-`;
-
-
-    loadDynamicStyle('./src/styles/employeePayments.css', 'employeePayments', ['employeeDashboard']);
-    initEmployeePaymentsEvents();
+        <div class="container mt-4">
+            <h1 class="mb-4">Historial de Pagos</h1>
+            <div class="table-responsive">
+                <table class="table table-striped table-hover align-middle">
+                <thead class="table-primary">
+                    <tr>
+                    <th scope="col">Fecha</th>
+                    <th scope="col">Monto</th>
+                    <th scope="col">Concepto</th>
+                    <th scope="col">Estado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                    <td>2025-07-31</td>
+                    <td>1,200 €</td>
+                    <td>Salario Julio 2025</td>
+                    <td><span class="badge bg-success">Pagado</span></td>
+                    </tr>
+                    <tr>
+                    <td>2025-06-30</td>
+                    <td>1,200 €</td>
+                    <td>Salario Junio 2025</td>
+                    <td><span class="badge bg-success">Pagado</span></td>
+                    </tr>
+                    <tr>
+                    <td>2025-05-31</td>
+                    <td>1,200 €</td>
+                    <td>Salario Mayo 2025</td>
+                    <td><span class="badge bg-success">Pagado</span></td>
+                    </tr>
+                </tbody>
+                </table>
+            </div>
+        </div>`;
 }
