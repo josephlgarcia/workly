@@ -29,7 +29,7 @@ export async function showLogin() {
 
                                             <div data-mdb-input-init class="form-outline mb-4">
                                                 <input type="text" id="document" class="form-control form-control-lg" required/>
-                                                <label class="form-label" for="form2Example17">Email address</label>
+                                                <label class="form-label" for="form2Example17">Documento</label>
                                             </div>
 
                                             <div data-mdb-input-init class="form-outline mb-4">
